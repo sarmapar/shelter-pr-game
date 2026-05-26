@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paws Forward — Happy Tails Animal Shelter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #FBF4E2;
+  --cream-dark: #EDE1C4;
+  --paper: #FDFAF0;
+  --wood: #7A5230;
+  --wood-dark: #4A2E10;
+  --ink: #2C1A08;
+  --ink-mid: #7A5A3A;
+  --ink-light: #A88A6A;
+  --accent: #C85A12;
+  --accent-lt: #E87A38;
+  --green: #3A6A2A;
+  --green-lt: #5A9A48;
+  --green-bg: #ECF6E8;
+  --red: #AA2828;
+  --red-lt: #D84848;
+  --red-bg: #FAEAEA;
+  --yellow: #9A7010;
+  --yellow-bg: #FDF3D0;
+  --blue: #2A508A;
+  --border: rgba(44,26,8,0.14);
+  --shadow: rgba(44,26,8,0.16);
+}
+
+body { font-family: 'Nunito', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ── INTRO ── */
+#s-intro {
+  background: linear-gradient(170deg, #2A1605 0%, #4A2A0E 40%, #7A5230 100%);
+  align-items: center; justify-content: center; position: relative; overflow: hidden;
+}
+.intro-stars {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,230,160,0.4) 1px, transparent 1px);
+  background-size: 40px 40px; opacity: 0.3;
+}
+.shelter-building {
+  width: 480px; max-width: 92vw; background: #F5ECD8;
+  border-radius: 16px 16px 0 0; padding: 28px 32px 20px;
+  position: relative; box-shadow: 0 -4px 32px rgba(0,0,0,0.4); z-index: 1;
+}
+.shelter-roof {
+  position: absolute; top: -42px; left: -12px; right: -12px; height: 56px;
+  background: #A0522A; clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+.shelter-sign {
+  background: #C85A12; color: white; text-align: center; border-radius: 8px;
+  padding: 8px 16px; margin-bottom: 18px; font-size: 13px; font-weight: 800;
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+.shelter-windows { display: flex; gap: 16px; justify-content: center; margin-bottom: 20px; }
+.shelter-window {
+  width: 72px; height: 60px; background: #7AAFE0;
+  border-radius: 36px 36px 6px 6px; border: 4px solid #7A5230;
+  position: relative; overflow: hidden;
+}
+.shelter-window::after { content:''; position:absolute; top:0; left:50%; bottom:0; width:3px; background:rgba(122,82,48,0.5); }
+.shelter-window::before { content:''; position:absolute; left:0; right:0; top:50%; height:3px; background:rgba(122,82,48,0.5); }
+.window-dog { position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); font-size: 22px; filter: brightness(0.8); }
+.shelter-door { width: 60px; height: 72px; background: #5C3010; border-radius: 30px 30px 4px 4px; margin: 0 auto; position: relative; }
+.shelter-door::after { content: '🐾'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 18px; }
+.intro-card {
+  width: 480px; max-width: 92vw; background: var(--cream);
+  padding: 32px 36px 36px; z-index: 1; border-radius: 0 0 20px 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35); text-align: center;
+}
+.intro-title { font-size: 42px; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+.intro-subtitle { font-size: 14px; font-weight: 700; color: var(--ink-mid); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 18px; }
+.intro-desc { font-size: 15px; color: var(--ink-mid); line-height: 1.6; margin-bottom: 28px; }
+
+/* ── BUTTONS ── */
+.btn-primary {
+  background: var(--accent); color: white; border: none; border-radius: 50px;
+  padding: 14px 40px; font-family: 'Nunito', sans-serif; font-size: 17px;
+  font-weight: 800; cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(200,90,18,0.4);
+}
+.btn-primary:hover { background: var(--accent-lt); transform: translateY(-2px); }
+.btn-secondary {
+  flex: 1; padding: 12px; background: var(--cream); color: var(--ink-mid);
+  border: 2px solid var(--cream-dark); border-radius: 10px;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.18s;
+}
+.btn-secondary:hover { border-color: var(--ink-light); color: var(--ink); }
+
+/* ── TRAINING ── */
+#s-training { background: var(--cream); }
+.training-header {
+  background: var(--wood-dark); color: white; padding: 14px 24px;
+  display: flex; align-items: center; gap: 12px;
+}
+.training-badge {
+  background: var(--accent); color: white; padding: 4px 12px;
+  border-radius: 20px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+}
+.training-header h2 { font-size: 16px; font-weight: 800; }
+.training-step { font-size: 12px; color: rgba(255,255,255,0.6); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.training-body { display: flex; flex-direction: column; align-items: center; padding: 20px 16px; gap: 16px; flex: 1; }
+.manager-bubble {
+  background: white; border: 2px solid var(--cream-dark); border-radius: 16px;
+  padding: 16px 20px; max-width: 640px; width: 100%; position: relative; box-shadow: 0 2px 12px var(--shadow);
+}
+.manager-bubble::before { content:''; position:absolute; top:-14px; left:32px; width:0; height:0; border-left:10px solid transparent; border-right:10px solid transparent; border-bottom:14px solid var(--cream-dark); }
+.manager-bubble::after  { content:''; position:absolute; top:-11px; left:33px; width:0; height:0; border-left:9px solid transparent; border-right:9px solid transparent; border-bottom:13px solid white; }
+.manager-who { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.manager-avatar { width:36px; height:36px; background:var(--wood); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; }
+.manager-name { font-size: 13px; font-weight: 800; color: var(--ink-mid); }
+.manager-role { font-size: 11px; color: var(--ink-light); }
+.manager-text { font-size: 14px; line-height: 1.6; color: var(--ink); }
+.manager-text strong { color: var(--accent); }
+
+/* ── CASE FILE ── */
+.case-file {
+  background: var(--paper); border-radius: 12px;
+  border: 2px solid var(--cream-dark);
+  box-shadow: 0 4px 20px var(--shadow), 4px 4px 0 var(--cream-dark);
+  max-width: 640px; width: 100%; overflow: hidden; position: relative;
+}
+.file-tab {
+  position: absolute; top: -2px; left: 20px; background: var(--wood); color: white;
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+  padding: 3px 14px; border-radius: 0 0 8px 8px;
+}
+.file-inner { padding: 28px 24px 20px; }
+.dog-profile {
+  display: flex; gap: 20px; margin-bottom: 20px; padding-bottom: 20px;
+  border-bottom: 2px dashed var(--cream-dark);
+}
+.dog-illustration {
+  width: 100px; height: 100px; flex-shrink: 0; background: var(--cream);
+  border-radius: 12px; border: 2px solid var(--cream-dark); overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.dog-info { flex: 1; }
+.dog-name-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+.dog-name { font-size: 24px; font-weight: 900; color: var(--ink); font-family: 'Caveat', cursive; }
+.found-tag {
+  font-size: 11px; font-weight: 700; background: var(--yellow-bg); color: var(--yellow);
+  padding: 2px 8px; border-radius: 20px; border: 1px solid rgba(154,112,16,0.25);
+}
+.dog-breed { font-size: 13px; font-weight: 700; color: var(--ink-mid); margin-bottom: 6px; }
+.dog-desc { font-size: 12px; color: var(--ink-mid); line-height: 1.55; }
+
+/* AI Match section */
+.match-section { margin-bottom: 14px; }
+.match-label {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--ink-light); margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.match-label::after { content:''; flex:1; height:1px; background:var(--border); }
+.ai-badge { background: var(--blue); color: white; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px; }
+
+/* Owner rows — now with call button */
+.owner-row {
+  display: grid;
+  grid-template-columns: 26px 1fr auto auto;
+  gap: 10px; align-items: center;
+  padding: 10px 12px; border-radius: 10px; margin-bottom: 8px;
+  border: 2px solid transparent; transition: all 0.2s;
+}
+.owner-row.top-match { background: white; border-color: var(--cream-dark); box-shadow: 0 2px 8px var(--shadow); }
+.owner-row.other-match { background: rgba(0,0,0,0.025); }
+.rank-num { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; }
+.rank-1 { background: var(--accent); color: white; }
+.rank-other { background: var(--cream-dark); color: var(--ink-mid); }
+.owner-details { min-width: 0; }
+.owner-name { font-size: 13px; font-weight: 800; color: var(--ink); margin-bottom: 2px; }
+.owner-pet { font-size: 11px; color: var(--ink-mid); line-height: 1.35; }
+.score-col { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; min-width: 52px; }
+.score-num { font-size: 16px; font-weight: 900; color: var(--ink); }
+.score-bar-wrap { width: 52px; height: 5px; background: var(--cream-dark); border-radius: 3px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 3px; }
+.score-high { background: var(--green-lt); }
+.score-mid  { background: var(--yellow); }
+.score-low  { background: var(--ink-light); }
+
+/* Per-owner call button */
+.btn-call-owner {
+  background: var(--green); color: white; border: none; border-radius: 8px;
+  padding: 7px 11px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800;
+  cursor: pointer; white-space: nowrap; transition: all 0.18s; flex-shrink: 0;
+}
+.btn-call-owner:hover { background: var(--green-lt); transform: translateY(-1px); }
+
+/* Skip button */
+.skip-row { margin-top: 10px; display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
+.action-hint { font-size: 11px; color: var(--ink-light); flex: 1; }
+.btn-skip {
+  padding: 10px 20px; background: white; color: var(--ink-mid);
+  border: 2px solid var(--cream-dark); border-radius: 8px;
+  font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.18s;
+}
+.btn-skip:hover { border-color: var(--red); color: var(--red); background: var(--red-bg); }
+
+/* ── OUTCOME TOAST ── */
+#outcome-toast {
+  position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+  z-index: 100; background: rgba(44,26,8,0.5); backdrop-filter: blur(3px);
+}
+#outcome-toast.show { display: flex; animation: fadeIn 0.25s ease; }
+.toast-card {
+  background: white; border-radius: 20px; padding: 28px 36px; max-width: 400px; width: 90%;
+  text-align: center; box-shadow: 0 12px 48px rgba(0,0,0,0.4); animation: slideUp 0.3s ease;
+}
+.toast-icon { font-size: 52px; margin-bottom: 10px; display: block; }
+.toast-type { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.toast-type.tp { color: var(--green); } .toast-type.fp { color: var(--red); }
+.toast-type.fn { color: var(--yellow); } .toast-type.tn { color: var(--ink-light); }
+.toast-title { font-size: 20px; font-weight: 900; margin-bottom: 10px; }
+.toast-msg { font-size: 13px; color: var(--ink-mid); line-height: 1.6; margin-bottom: 14px; }
+.toast-explain {
+  background: var(--cream); border-radius: 10px; padding: 10px 14px;
+  font-size: 12px; color: var(--ink-mid); line-height: 1.5; margin-bottom: 16px; text-align: left;
+}
+.toast-explain strong { color: var(--ink); }
+.btn-next {
+  background: var(--accent); color: white; border: none; border-radius: 50px; padding: 10px 28px;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.18s;
+}
+.btn-next:hover { background: var(--accent-lt); transform: translateY(-1px); }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* ── GAME ── */
+#s-game { background: var(--cream); }
+.game-topbar {
+  background: var(--wood-dark); color: white; padding: 10px 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.topbar-day { font-size: 14px; font-weight: 800; }
+.topbar-streak { font-size: 13px; color: rgba(255,255,255,0.6); }
+.topbar-streak span { color: #F5B942; font-weight: 800; }
+.topbar-timer { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.timer-display { font-size: 22px; font-weight: 900; font-variant-numeric: tabular-nums; color: white; }
+.timer-display.urgent { color: #FF6B6B; animation: pulse 1s ease infinite; }
+.timer-label { font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 700; text-transform: uppercase; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+.game-body {
+  display: flex; flex: 1; padding: 20px 16px;
+  max-width: 1100px; margin: 0 auto; width: 100%; gap: 20px; align-items: flex-start;
+}
+.stats-sidebar { width: 200px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+.stats-panel {
+  background: white; border-radius: 12px; border: 2px solid var(--cream-dark);
+  padding: 14px; box-shadow: 0 2px 10px var(--shadow);
+}
+.stats-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-light); margin-bottom: 12px; }
+.stat-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.stat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.dot-tp { background: var(--green); } .dot-fp { background: var(--red); }
+.dot-fn { background: var(--yellow); } .dot-tn { background: var(--ink-light); }
+.stat-name { font-size: 12px; color: var(--ink-mid); flex: 1; }
+.stat-val { font-size: 16px; font-weight: 900; color: var(--ink); }
+.metric-row { border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px; display: flex; justify-content: space-between; align-items: center; }
+.metric-label { font-size: 12px; font-weight: 700; color: var(--ink-mid); }
+.metric-val { font-size: 15px; font-weight: 900; }
+.quota-panel { background: white; border-radius: 12px; border: 2px solid var(--cream-dark); padding: 14px; box-shadow: 0 2px 10px var(--shadow); }
+.quota-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-light); margin-bottom: 10px; }
+.quota-item { font-size: 12px; color: var(--ink-mid); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.quota-check { width:16px; height:16px; border-radius:50%; border:2px solid var(--cream-dark); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:9px; }
+.quota-check.met  { background: var(--green); border-color: var(--green); color: white; }
+.quota-check.fail { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+
+.desk-area { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 14px; min-width: 0; }
+.desk-meta { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 640px; }
+.files-remaining { font-size: 13px; color: var(--ink-mid); font-weight: 600; }
+.files-remaining strong { color: var(--ink); font-weight: 900; }
+
+/* ── DAY END ── */
+#s-dayend { background: var(--cream); align-items: center; justify-content: center; padding: 24px 16px; }
+.dayend-card {
+  background: white; border-radius: 20px; border: 2px solid var(--cream-dark);
+  box-shadow: 0 8px 40px var(--shadow); max-width: 600px; width: 100%; overflow: hidden;
+}
+.dayend-header { background: var(--wood-dark); color: white; padding: 24px 28px; text-align: center; }
+.dayend-header h2 { font-size: 28px; font-weight: 900; margin-bottom: 4px; }
+.dayend-header p { font-size: 14px; opacity: 0.65; }
+.dayend-body { padding: 24px 28px; }
+.outcome-banner { padding: 14px 18px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
+.outcome-banner.success { background: var(--green-bg); border: 2px solid rgba(58,106,42,0.25); }
+.outcome-banner.fail    { background: var(--red-bg);   border: 2px solid rgba(170,40,40,0.25); }
+.outcome-banner h3 { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+.outcome-banner.success h3 { color: var(--green); }
+.outcome-banner.fail    h3 { color: var(--red);   }
+.outcome-banner p { font-size: 13px; color: var(--ink-mid); }
+
+/* Confusion matrix */
+.cm-wrap { margin-bottom: 18px; }
+.cm-col-headers { display: grid; grid-template-columns: 78px 1fr 1fr; gap: 6px; margin-bottom: 4px; }
+.cm-col-header { text-align: center; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--ink-light); padding: 4px 0; }
+.cm-row { display: grid; grid-template-columns: 78px 1fr 1fr; gap: 6px; margin-bottom: 6px; align-items: stretch; }
+.cm-row-header {
+  display: flex; align-items: center; justify-content: flex-end;
+  font-size: 10px; font-weight: 700; color: var(--ink-mid); text-align: right;
+  padding-right: 8px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3;
+}
+.cm-cell { background: var(--cream); border-radius: 10px; padding: 12px 10px; text-align: center; }
+.cm-cell .big-num { font-size: 32px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+.cm-cell .cell-lbl { font-size: 11px; color: var(--ink-mid); font-weight: 700; }
+.cm-cell.tp .big-num { color: var(--green); }
+.cm-cell.fp .big-num { color: var(--red); }
+.cm-cell.fn .big-num { color: var(--yellow); }
+.cm-cell.tn .big-num { color: var(--ink-light); }
+
+.pr-section { background: var(--cream); border-radius: 12px; padding: 16px 18px; margin-bottom: 18px; }
+.pr-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-light); margin-bottom: 12px; }
+.pr-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.pr-name { width: 90px; font-size: 13px; font-weight: 800; color: var(--ink); flex-shrink: 0; }
+.pr-bar-wrap { flex: 1; height: 12px; background: var(--cream-dark); border-radius: 6px; overflow: hidden; }
+.pr-bar-fill { height: 100%; border-radius: 6px; transition: width 0.7s ease; }
+.pr-bar-precision { background: var(--accent); }
+.pr-bar-recall    { background: var(--blue); }
+.pr-pct { font-size: 15px; font-weight: 900; width: 44px; text-align: right; flex-shrink: 0; }
+.pr-target { font-size: 11px; color: var(--ink-light); width: 70px; flex-shrink: 0; text-align: right; }
+.pr-target.met  { color: var(--green); font-weight: 700; }
+.pr-target.miss { color: var(--red);   font-weight: 700; }
+
+.threshold-note {
+  background: #EFF4FF; border-radius: 10px; padding: 12px 16px; font-size: 13px;
+  color: var(--blue); line-height: 1.5; margin-bottom: 18px;
+  border: 1px solid rgba(42,80,138,0.15);
+}
+.threshold-note strong { font-weight: 800; }
+
+/* Beat the AI */
+.beat-ai-section { background: var(--cream); border-radius: 12px; padding: 16px 18px; margin-bottom: 18px; }
+.beat-ai-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-light); margin-bottom: 6px; }
+.beat-ai-desc { font-size: 12px; color: var(--ink-mid); line-height: 1.5; margin-bottom: 12px; }
+.beat-ai-verdict { font-size: 12px; color: var(--ink-mid); line-height: 1.7; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+
+.dayend-actions { display: flex; gap: 10px; }
+
+/* ── GAME OVER ── */
+#s-gameover { background: var(--wood-dark); align-items: center; justify-content: center; padding: 24px 16px; }
+.gameover-card { background: white; border-radius: 20px; padding: 36px 32px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 12px 48px rgba(0,0,0,0.5); }
+.gameover-card h2 { font-size: 32px; font-weight: 900; margin-bottom: 8px; }
+.gameover-card .sub { font-size: 15px; color: var(--ink-mid); margin-bottom: 24px; }
+.final-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.final-stat { background: var(--cream); border-radius: 10px; padding: 14px 10px; text-align: center; }
+.final-stat .n { font-size: 30px; font-weight: 900; color: var(--accent); }
+.final-stat .l { font-size: 11px; color: var(--ink-mid); font-weight: 700; }
+
+@media (max-width: 680px) {
+  .game-body { flex-direction: column; }
+  .stats-sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; }
+  .stats-panel, .quota-panel { flex: 1; min-width: 150px; }
+}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="s-intro" class="screen active">
+  <div class="intro-stars"></div>
+  <div class="shelter-building">
+    <div class="shelter-roof"></div>
+    <div class="shelter-sign">Happy Tails Animal Shelter</div>
+    <div class="shelter-windows">
+      <div class="shelter-window"><div class="window-dog" id="w1"></div></div>
+      <div class="shelter-window"><div class="window-dog" id="w2"></div></div>
+      <div class="shelter-window"><div class="window-dog" id="w3"></div></div>
+    </div>
+    <div class="shelter-door"></div>
+  </div>
+  <div class="intro-card">
+    <div class="intro-title">Paws Forward</div>
+    <div class="intro-subtitle">A Shelter Matching Game</div>
+    <div class="intro-desc">You've just started at Happy Tails Shelter. Your supervisor has a shiny new AI model to help reunite lost dogs with their owners — and you're the one deciding when to make the call.</div>
+    <button class="btn-primary" onclick="startTraining()">Begin Training</button>
+  </div>
+</div>
+
+<!-- TRAINING -->
+<div id="s-training" class="screen">
+  <div class="training-header">
+    <div class="training-badge">Training</div>
+    <h2>Learning the System</h2>
+    <div class="training-step" id="train-step-label" style="margin-left:auto"></div>
+  </div>
+  <div class="training-body">
+    <div class="manager-bubble">
+      <div class="manager-who">
+        <div class="manager-avatar">👩</div>
+        <div>
+          <div class="manager-name">Manager Pat</div>
+          <div class="manager-role">Shelter Director, 12 years</div>
+        </div>
+      </div>
+      <div class="manager-text" id="manager-text"></div>
+    </div>
+    <div id="train-case"></div>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="s-game" class="screen">
+  <div class="game-topbar">
+    <div class="topbar-day" id="day-label">Day 1</div>
+    <div class="topbar-streak" id="streak-label"></div>
+    <div class="topbar-timer">
+      <div class="timer-label">Shift ends in</div>
+      <div class="timer-display" id="timer-display">1:30</div>
+    </div>
+  </div>
+  <div class="game-body">
+    <div class="stats-sidebar">
+      <div class="stats-panel">
+        <div class="stats-title">Today's Calls</div>
+        <div class="stat-row"><div class="stat-dot dot-tp"></div><div class="stat-name">Reunions</div><div class="stat-val" id="stat-tp">0</div></div>
+        <div class="stat-row"><div class="stat-dot dot-fp"></div><div class="stat-name">Angry owners</div><div class="stat-val" id="stat-fp">0</div></div>
+        <div class="stat-row"><div class="stat-dot dot-fn"></div><div class="stat-name">Missed matches</div><div class="stat-val" id="stat-fn">0</div></div>
+        <div class="stat-row"><div class="stat-dot dot-tn"></div><div class="stat-name">Correct skips</div><div class="stat-val" id="stat-tn">0</div></div>
+        <div class="metric-row"><div class="metric-label">Precision</div><div class="metric-val" id="live-precision">—</div></div>
+        <div class="metric-row"><div class="metric-label">Recall</div><div class="metric-val" id="live-recall">—</div></div>
+      </div>
+      <div class="quota-panel">
+        <div class="quota-title">Today's Quota</div>
+        <div class="quota-item"><div class="quota-check" id="q-precision"></div><span id="q-precision-label">Precision ≥ —%</span></div>
+        <div class="quota-item"><div class="quota-check" id="q-recall"></div><span id="q-recall-label">Recall ≥ —%</span></div>
+      </div>
+    </div>
+    <div class="desk-area">
+      <div class="desk-meta"><div class="files-remaining" id="files-remaining"></div></div>
+      <div id="game-case-area"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY END -->
+<div id="s-dayend" class="screen">
+  <div class="dayend-card">
+    <div class="dayend-header">
+      <h2 id="de-title">End of Shift</h2>
+      <p id="de-subtitle"></p>
+    </div>
+    <div class="dayend-body">
+      <div class="outcome-banner" id="de-banner">
+        <h3 id="de-banner-title"></h3>
+        <p id="de-banner-msg"></p>
+      </div>
+
+      <!-- Confusion matrix -->
+      <div class="cm-wrap">
+        <div class="cm-col-headers">
+          <div></div>
+          <div class="cm-col-header">Called</div>
+          <div class="cm-col-header">Skipped</div>
+        </div>
+        <div class="cm-row">
+          <div class="cm-row-header">True match</div>
+          <div class="cm-cell tp"><div class="big-num" id="de-tp">0</div><div class="cell-lbl">Reunions</div></div>
+          <div class="cm-cell fn"><div class="big-num" id="de-fn">0</div><div class="cell-lbl">Matches missed</div></div>
+        </div>
+        <div class="cm-row">
+          <div class="cm-row-header">Not a match</div>
+          <div class="cm-cell fp"><div class="big-num" id="de-fp">0</div><div class="cell-lbl">Angry owners</div></div>
+          <div class="cm-cell tn"><div class="big-num" id="de-tn">0</div><div class="cell-lbl">Correct skips</div></div>
+        </div>
+      </div>
+
+      <div class="pr-section">
+        <div class="pr-title">Your Metrics</div>
+        <div class="pr-row">
+          <div class="pr-name">Precision</div>
+          <div class="pr-bar-wrap"><div class="pr-bar-fill pr-bar-precision" id="de-prec-bar" style="width:0%"></div></div>
+          <div class="pr-pct" id="de-prec-pct">—</div>
+          <div class="pr-target" id="de-prec-target"></div>
+        </div>
+        <div class="pr-row">
+          <div class="pr-name">Recall</div>
+          <div class="pr-bar-wrap"><div class="pr-bar-fill pr-bar-recall" id="de-rec-bar" style="width:0%"></div></div>
+          <div class="pr-pct" id="de-rec-pct">—</div>
+          <div class="pr-target" id="de-rec-target"></div>
+        </div>
+      </div>
+
+      <div class="threshold-note" id="de-threshold"></div>
+
+      <div class="beat-ai-section">
+        <div class="beat-ai-title">Beat the AI?</div>
+        <div class="beat-ai-desc">Solid lines = what a pure score-threshold strategy would achieve on your cases. Dashed line = you. <span style="color:var(--green);font-weight:700">Green = you win</span> at that threshold.</div>
+        <div id="beat-ai-chart"></div>
+        <div class="beat-ai-verdict" id="beat-ai-verdict"></div>
+      </div>
+
+      <div class="dayend-actions">
+        <button class="btn-secondary" onclick="showGameOver()">End Career</button>
+        <button class="btn-primary" style="flex:2" onclick="nextDay()">Start Next Day</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME OVER -->
+<div id="s-gameover" class="screen">
+  <div class="gameover-card">
+    <div style="font-size:52px;margin-bottom:12px">🐾</div>
+    <h2>Thanks for your service!</h2>
+    <div class="sub" id="go-sub"></div>
+    <div class="final-stats" id="go-stats"></div>
+    <button class="btn-primary" onclick="restartGame()">Play Again</button>
+  </div>
+</div>
+
+<!-- OUTCOME TOAST -->
+<div id="outcome-toast">
+  <div class="toast-card">
+    <span class="toast-icon" id="toast-icon"></span>
+    <div class="toast-type" id="toast-type"></div>
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-msg" id="toast-msg"></div>
+    <div class="toast-explain" id="toast-explain"></div>
+    <button class="btn-next" onclick="closeToast()">Next Case →</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// CASE DATA
+// trueOwnerIdx: 0 = top candidate is match
+//               1 = second candidate is match
+//            null = none of these (should skip)
+// ═══════════════════════════════════════════════════════════
+const CASES = [
+  // ── TRUE OWNER AT INDEX 0 (high confidence) ──
+  {id:1, shelterName:'Butterscotch', breed:'Golden Retriever', coat:'golden',
+   desc:'Female, ~3 yrs. Warm golden coat, pink collar with a tiny bone charm. Found near Maple Park by a morning jogger. Very gentle, keeps pawing at the door.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Rosa Chen',       pet:'Biscuit — golden retriever, 3F, pink collar with bone charm, gentle', score:0.92},
+     {name:'The Hoffmanns',   pet:'Butter — yellow lab mix, 4M, blue collar',                            score:0.38},
+     {name:'Sam Park',        pet:'Sunshine — golden retriever, 2F, no collar',                          score:0.29},
+   ],
+   tpLine:'Rosa is crying before Butterscotch even runs to her. She hugs the dog for a full minute, then thanks you three times.',
+   fnLine:'Rosa Chen came in asking about her golden. You\'d closed the file. She stares at the empty kennel.',
+   fpLine:'The owner arrives but shakes their head. "That\'s not our dog."',
+  },
+  {id:2, shelterName:'Little Torpedo', breed:'Miniature Dachshund', coat:'black',
+   desc:'Male, ~5 yrs. Black and tan, tiny red Christmas sweater still on (in June). Found sniffing around behind the grocery store. Extremely wiggly.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Eli Goldstein',  pet:'Pepper — black & tan mini dachshund, 5M, red holiday sweater', score:0.88},
+     {name:'June Watkins',   pet:'Noodle — brown dachshund, 3F, striped bandana',                score:0.44},
+     {name:'Marco Reyes',    pet:'Oscar — black dachshund mix, 4M, no collar',                   score:0.31},
+   ],
+   tpLine:'Eli holds the dog up and they touch noses. "I searched the whole neighborhood!" He says he never took the sweater off — it was a gift from his daughter.',
+   fnLine:'Eli came in about his dog later that week. You\'d filed the case closed. "He was here? The whole time?"',
+   fpLine:'The owner arrives and frowns. "Mine has a different collar and he\'s a year older. Not my dog."',
+  },
+  {id:3, shelterName:'Cloud Puff', breed:'Bichon Frisé', coat:'white',
+   desc:'Female, ~2 yrs. Perfectly groomed fluffy white dog. Smells like lavender. Purple glitter tag that says "Princess." Very well-mannered.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'The Kaminsky Family', pet:'Luna — bichon frisé, 2F, purple glitter tag, freshly groomed', score:0.91},
+     {name:'Diane Cho',           pet:'Snowball — white maltese, 4F, silver tag',                     score:0.47},
+     {name:'Peter Ng',            pet:'Cloud — white poodle mix, 3M',                                 score:0.22},
+   ],
+   tpLine:'The Kaminsky kids burst through the door. Cloud Puff leaps and nearly tackles the youngest. The parents look like they haven\'t slept.',
+   fnLine:'The Kaminsky family came in with a flyer. "Purple glitter tag, freshly groomed — how specific does it need to be?"',
+   fpLine:'The owner arrives, takes one look, and shakes their head. "Wrong dog."',
+  },
+  {id:4, shelterName:'Mr. Pudding', breed:'Chocolate Lab', coat:'brown',
+   desc:'Male, ~4 yrs. Big chocolate lab with a white blaze on his chest. Found cowering near the highway — likely spooked by traffic. Very food motivated.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Diego Vásquez',  pet:'Rocky — chocolate lab, 4M, white chest blaze, food motivated',  score:0.87},
+     {name:'Ann Fletcher',   pet:'Cocoa — brown lab, 5F, no chest markings',                      score:0.52},
+     {name:'Tim Bauer',      pet:'Bruno — brown retriever mix, 3M',                               score:0.41},
+   ],
+   tpLine:'Mr. Pudding recognizes Diego\'s voice from across the room and starts a full-body wag. Diego drops to the floor. The staff all stop to watch.',
+   fnLine:'Diego had been driving up and down the highway. By the time he found you, Mr. Pudding had already been moved.',
+   fpLine:'"Rocky has a smaller blaze shaped differently. Also my dog is a year younger." Diego leaves puzzled.',
+  },
+  {id:5, shelterName:'Princess Stumps', breed:'Pembroke Welsh Corgi', coat:'red',
+   desc:'Female, ~6 yrs. Classic sable corgi — big ears, fluffy butt, stumpy legs. Found herding pigeons at the community garden. Has extremely strong opinions.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Sophie Larsson', pet:'Ginger — pembroke corgi, 6F, sable coloring, very opinionated', score:0.85},
+     {name:'Mark Evans',     pet:'Cheddar — corgi mix, 2M, lighter coloring',                     score:0.49},
+     {name:'Lily Zhao',      pet:'Paprika — orange corgi, 5F, smaller build',                     score:0.38},
+   ],
+   tpLine:'Sophie laughs. "She looks so offended about all of this." Princess Stumps does look offended. She trots past Sophie and sits at the door, waiting to leave.',
+   fnLine:'Sophie came in. "A bossy corgi herding pigeons — how many of those exist? Why didn\'t anyone call?"',
+   fpLine:'The owner comes in and Princess Stumps ignores them completely. "Mine always runs to me. This isn\'t her."',
+  },
+  {id:6, shelterName:'Polka', breed:'Dalmatian Mix', coat:'spotted',
+   desc:'Female, ~1 yr. Spotted black and white, floppy ears, still in that gangly puppy phase. Extremely friendly. Came in Monday — no collar, no chip.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Camille Dubois', pet:'Mochi — dalmatian mix, 1F, black spots, floppy ears, very playful',   score:0.71},
+     {name:'Kevin Walsh',    pet:'Domino — dalmatian, 3M, upright ears, more spots, older dog',          score:0.55},
+     {name:'Sarah Kim',      pet:'Oreo — black & white mix, 2F, calmer, smaller',                        score:0.44},
+   ],
+   tpLine:'Camille kneels down and Polka knocks her sideways licking her face. Floppy ears and puppy energy — unmistakable.',
+   fnLine:'Camille had called every shelter in the county. She cries when she hears Polka was here the whole time.',
+   fpLine:'The owner examines the dog carefully. "The ear shape is different. And the spotting pattern doesn\'t match mine."',
+  },
+  {id:7, shelterName:'Howler', breed:'Husky Mix', coat:'gray',
+   desc:'Male, ~3 yrs. Dark gray with striking blue eyes. Very vocal — has been howling every night in a way that\'s haunting but beautiful. Found near the train station.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Nadia Petrov', pet:'Shadow — husky mix, 3M, dark gray, blue eyes, very expressive', score:0.74},
+     {name:'Jason Reed',   pet:'Ash — gray husky, 4M, brown eyes, quieter disposition',         score:0.58},
+     {name:'Mia Torres',   pet:'Wolf — gray shepherd mix, 2M, brown eyes',                      score:0.36},
+   ],
+   tpLine:'Howler starts howling the moment he hears Nadia\'s voice. She howls back. The whole shelter goes quiet, then everyone starts laughing.',
+   fnLine:'Nadia had been posting flyers all week. Her dog had blue eyes — right there in the description.',
+   fpLine:'"Ash has brown eyes. Also he never howls. This is a different dog entirely."',
+  },
+  {id:8, shelterName:'Silver Fox', breed:'Golden Retriever', coat:'golden',
+   desc:'Male, ~7 yrs. Older golden, noticeably grey around the muzzle and eyes. Calm, moves slowly. Microchip reader failed on intake — possibly demagnetized.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Harold & Irene Bowen', pet:'Cheddar — golden retriever, 7M, very grey muzzle, arthritic, calm',   score:0.69},
+     {name:'Yuki Tanaka',          pet:'Honey — golden retriever, 6F, minimal grey, still energetic',           score:0.58},
+     {name:'Chris Morgan',         pet:'Bear — golden lab mix, 5M, younger, more active',                       score:0.47},
+   ],
+   tpLine:'Irene Bowen puts her face into Silver Fox\'s fur and just stays there. Harold puts a hand on her shoulder. Nobody speaks for a long time.',
+   fnLine:'The Bowens had been calling daily. Silver Fox spent another month at the shelter before they found him.',
+   fpLine:'The owner looks at the grey muzzle. "Mine is younger, less greying. Different dog."',
+  },
+  {id:9, shelterName:'Velvet', breed:'Cocker Spaniel', coat:'brown',
+   desc:'Female, ~4 yrs. Rich brown with long silky ears. Extremely shy — hides in the back of her kennel whenever someone comes close. Hasn\'t eaten much.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Fatima Al-Hassan', pet:'Willow — cocker spaniel, 4F, dark brown, long ears, very timid with strangers', score:0.67},
+     {name:'Brian Chu',        pet:'Hazel — spaniel mix, 3F, golden-brown, more confident',                          score:0.51},
+     {name:'Nina Osei',        pet:'Caramel — brown spaniel, 5F',                                                    score:0.40},
+   ],
+   tpLine:'Velvet hears Fatima\'s voice before she sees her, stops hiding, and walks straight to the kennel door. She knew.',
+   fnLine:'Fatima came in asking about a shy brown spaniel. Velvet had been moved to a foster home. "She would have been so scared there without me."',
+   fpLine:'"Mine is a year younger and has a lighter coat. Also she runs to me, not away from me."',
+  },
+  {id:10, shelterName:'Scruffy', breed:'Mixed Breed', coat:'golden',
+   desc:'Female, ~2 yrs. Scruffy golden-brown mutt, medium size, no collar. Shy around strangers but warms up slowly. Found wandering near the elementary school.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Leo Fernandez', pet:'Toast — medium golden-brown mutt, 2F, nervous at first, no collar',  score:0.53},
+     {name:'Alice Yip',     pet:'Biscotti — tan mix, 3F, more confident, different texture coat',      score:0.41},
+     {name:'Pete Gibson',   pet:'Peanut — medium mutt, 2M, golden coat',                              score:0.38},
+   ],
+   tpLine:'Leo had been putting up flyers for three weeks. Scruffy approaches him slowly, sniffs his hand, then leans against his leg.',
+   fnLine:'Leo came in with a stack of flyers. "A 53% score and you didn\'t even call?" He\'s more sad than angry.',
+   fpLine:'"That\'s not my dog. Mine has a different ear shape and she comes right to me."',
+  },
+  {id:11, shelterName:'Old Greybeard', breed:'Schnauzer Mix', coat:'gray',
+   desc:'Male, ~8 yrs. Small silver-gray dog with a classic scruffy beard. Arthritic — moves slowly and carefully. Found sitting outside a coffee shop like he was waiting.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Gloria Santos', pet:'Pebble — miniature schnauzer mix, 8M, silver-gray, arthritic, very calm',   score:0.51},
+     {name:'Frank Kim',     pet:'Smokey — gray schnauzer, 5M, much younger, still energetic',                 score:0.44},
+     {name:'Tara Bell',     pet:'Dusty — gray terrier mix, 7F, slightly larger build',                        score:0.35},
+   ],
+   tpLine:'Gloria is 78 years old and has been beside herself. She holds him for a long time. On the way out, she comes back to hug you too.',
+   fnLine:'Gloria came in with a photo. Old Greybeard had been moved to a foster home two days before. She sits down to collect herself.',
+   fpLine:'"Mine has a different beard cut. Also Pebble would recognize me immediately — this dog doesn\'t."',
+  },
+  {id:22, shelterName:'Fancy Pants', breed:'Standard Poodle', coat:'white',
+   desc:'Female, ~3 yrs. Large cream-white standard poodle with a fresh puppy cut. Incredibly well-mannered. Found tied to a bike rack at the farmer\'s market.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Sylvia Drummond', pet:'Oatmeal — standard poodle, 3F, cream, puppy cut, very polite',     score:0.66},
+     {name:'Alex Wu',         pet:'Biscuit — white poodle, 2F, shorter clip, slightly smaller',        score:0.48},
+     {name:'Renee Black',     pet:'Pearl — cream standard poodle, 4F, slightly taller, wavy cut',      score:0.40},
+   ],
+   tpLine:'Sylvia had been calling every shelter. "I tied her up for literally two minutes!" Fancy Pants does a happy spin. Sylvia does one too.',
+   fnLine:'Sylvia came in with a photo. "A well-groomed standard poodle — how many of those come in?" You\'d filed it closed.',
+   fpLine:'"Oatmeal is a little taller and her cut is slightly different. Not her."',
+  },
+  {id:23, shelterName:'Red Velvet', breed:'Irish Setter', coat:'red',
+   desc:'Female, ~5 yrs. Rich mahogany red with a long silky coat. Came in limping from a thorn in her paw — now recovered. Very skittish around new people.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Pat & Doug Fitzgerald', pet:'Maple — irish setter, 5F, mahogany coat, silky, nervous with strangers',  score:0.58},
+     {name:'Kim Sundstrom',         pet:'Ruby — red setter mix, 4F, shorter coat, more social',                     score:0.44},
+     {name:'James Holland',         pet:'Scarlett — irish setter, 6F, darker brick-red coat, calmer',               score:0.38},
+   ],
+   tpLine:'Doug tears up when Red Velvet approaches him slowly. "We thought we\'d lost her for good." The thorn came from a hiking trail.',
+   fnLine:'"The mahogany coat, the silky fur, the shyness — it was so specific. Why didn\'t anyone call?"',
+   fpLine:'"Ruby is a year younger and a bit smaller. Also she\'s usually very friendly — this dog is hiding from me."',
+  },
+  {id:26, shelterName:'Tiny Fury', breed:'Pomeranian', coat:'red',
+   desc:'Female, ~6 yrs. Tiny, fluffy orange-red pomeranian. Small blue enamel tag on her collar. Extremely feisty — has already told off two other dogs in the kennel.',
+   trueOwnerIdx:0,
+   candidates:[
+     {name:'Greta Müller',  pet:'Pepper — pomeranian, 6F, orange-red, blue enamel tag, very feisty',  score:0.80},
+     {name:'Jay Okonkwo',   pet:'Blaze — pomeranian, 5M, darker red-brown coat',                      score:0.42},
+     {name:'Liz Cannon',    pet:'Foxy — pom mix, 4F, golden coat, calmer',                            score:0.31},
+   ],
+   tpLine:'Greta comes in and Tiny Fury barks at her with what can only be described as excitement. "That\'s definitely her. She barks at me like that every morning."',
+   fnLine:'"The blue enamel tag is so distinctive! You had the file closed?" Tiny Fury had bitten two volunteers by then.',
+   fpLine:'"That\'s not my dog. Mine is darker and doesn\'t have a blue tag."',
+  },
+
+  // ── TRUE OWNER AT INDEX 1 (read descriptions carefully!) ──
+  {id:13, shelterName:'Chocolate Chip', breed:'Labrador Mix', coat:'brown',
+   desc:'Female, ~3 yrs. Dark chocolate lab mix with a diagonal white blaze on chest — not a small spot, a proper streak going from left shoulder across. High energy. Found at the dog park.',
+   trueOwnerIdx:1,
+   candidates:[
+     {name:'Derek Moon',   pet:'Cocoa — chocolate lab, 3F, small circular chest spot, very active',           score:0.84},
+     {name:'Hannah Lee',   pet:'Brownie — choc lab mix, 3F, diagonal white blaze on chest, high energy',      score:0.52},
+     {name:'Marcus Webb',  pet:'Truffle — dark lab mix, 2M, no chest markings at all',                        score:0.39},
+   ],
+   tpLine:'Hannah sees the blaze and immediately kneels. "That diagonal streak — I\'d know it anywhere." She\'s been searching every park in the city.',
+   fnLine:'Hannah came in with a photo of the blaze. "It\'s diagonal — so specific. How was this not matched?" Chocolate Chip had been rehomed.',
+   fpLine:'"Cocoa has a small round spot, not a diagonal streak like this. This isn\'t my dog."',
+  },
+  {id:15, shelterName:'Drama', breed:'Siberian Husky', coat:'gray',
+   desc:'Female, ~2 yrs. Gray and white husky with striking blue eyes. Seems well-trained — sits on command. Found off-leash in a residential area.',
+   trueOwnerIdx:1,
+   candidates:[
+     {name:'Ivan Kozlov',  pet:'Storm — siberian husky, 2F, gray/white, trained, brown eyes',      score:0.79},
+     {name:'Amy Chen',     pet:'Frost — husky mix, 3F, gray/white, blue eyes, trained',            score:0.61},
+     {name:'Drew Sutton',  pet:'Blizzard — husky, 2M, gray, brown eyes',                          score:0.48},
+   ],
+   tpLine:'Amy comes in. Drama starts howling immediately. "Blue eyes — I\'d recognize them anywhere." You noticed the detail Ivan\'s description didn\'t match.',
+   fnLine:'"Frost has blue eyes — it\'s literally in my report. This dog has blue eyes. How was that missed?"',
+   fpLine:'"Storm has brown eyes. This dog has blue eyes. It\'s not her." Ivan points right at Drama\'s face.',
+  },
+  {id:16, shelterName:'Curly Fries', breed:'Goldendoodle', coat:'golden',
+   desc:'Female, ~1 yr. Curly golden dog, still clearly a puppy. Very fluffy. No chip. Has a small reddish streak of fur behind the left ear. Found tangled in a fence.',
+   trueOwnerIdx:1,
+   candidates:[
+     {name:'Priya Sharma',  pet:'Chai — goldendoodle, 1F, curly golden, puppy, likes to escape fences', score:0.82},
+     {name:'Cleo Davis',    pet:'Sunny — goldendoodle, 1F, apricot curls, reddish marking behind left ear', score:0.55},
+     {name:'Ben O\'Brien',  pet:'Butterscotch — golden retriever, 2F, wavy but not curly coat',          score:0.45},
+   ],
+   tpLine:'Cleo spots the ear streak immediately. "There\'s my mark! I was so worried." Curly Fries goes absolutely wild.',
+   fnLine:'"Reddish mark behind left ear — I wrote that in my report. It\'s right there on the dog." Cleo is heartbroken.',
+   fpLine:'"Chai doesn\'t have that reddish ear marking — hers is all gold. You had the clue right there in the description."',
+  },
+  {id:24, shelterName:'Slinky Jr.', breed:'Dachshund Mix', coat:'brown',
+   desc:'Male, ~4 yrs. Long brown dachshund-type body, short legs. Affectionate and great with kids. Has a small white patch under the chin — like a little beard. Found behind a restaurant.',
+   trueOwnerIdx:1,
+   candidates:[
+     {name:'Helen Park',  pet:'Noodle — dachshund, 4M, all-brown, very kid-friendly',                        score:0.77},
+     {name:'Mike Cross',  pet:'Slinky — dachshund mix, 4M, brown, white chin patch, good with kids',         score:0.51},
+     {name:'Amy Soto',    pet:'Pretzel — mini dachshund, 5F, reddish-brown, smaller',                        score:0.33},
+   ],
+   tpLine:'Mike spots the chin patch immediately. "That\'s my Slinky! Look at that little beard!" He tears up.',
+   fnLine:'"I specifically wrote \'white chin patch.\' It\'s right there on his chin." Mike is gutted.',
+   fpLine:'"Noodle is all-brown — no chin marking at all. This isn\'t him." Helen leaves deflated.',
+  },
+
+  // ── TRUE OWNER NULL (none of these — should skip) ──
+  {id:12, shelterName:'Droopy', breed:'Basset Hound', coat:'brown',
+   desc:'Male, ~5 yrs. Classic basset — very long ears, droopy eyes, brown and white. Has a solid white patch on the LEFT shoulder. Found near the fairgrounds. Very smelly.',
+   trueOwnerIdx:null,
+   candidates:[
+     {name:'Owen Burke',    pet:'Pretzel — basset hound, 5M, white patch on right shoulder, confused easily', score:0.88},
+     {name:'Suki Yamamoto', pet:'Noodle — basset mix, 3F, tan and white, shorter ears',                       score:0.44},
+     {name:'Carla Reyes',   pet:'Dumpling — basset hound, 4M, mostly tan coloring',                           score:0.38},
+   ],
+   tpLine:'', fnLine:'',
+   fpLine:'Owen points to the shoulder. "Pretzel\'s patch is on the RIGHT. This dog\'s is on the LEFT." He drove 40 minutes.',
+  },
+  {id:14, shelterName:'Zippy', breed:'Jack Russell Mix', coat:'white',
+   desc:'Male, ~4 yrs. Small white dog with brown patches on face and back. Extremely fast and hyper. Has a notch in the left ear — looks like an old fence injury. Came in Friday.',
+   trueOwnerIdx:null,
+   candidates:[
+     {name:'Bex Johansson', pet:'Pixel — jack russell, 4M, white/brown patches, hyperactive — no ear damage', score:0.81},
+     {name:'Raj Mehta',     pet:'Speedy — jack russell mix, 3M, white/tan patches',                           score:0.60},
+     {name:'Lena Wolff',    pet:'Domino — white terrier, 5F, black patches, both ears intact',                score:0.39},
+   ],
+   tpLine:'', fnLine:'',
+   fpLine:'"The patches are on the wrong side. And Pixel has both ears intact — this dog has a notch." Bex photographs it for her own search anyway.',
+  },
+  {id:17, shelterName:'Snowflake', breed:'Samoyed', coat:'white',
+   desc:'Male, ~5 yrs. Magnificently fluffy white dog. Has a dark gray birthmark on his left haunch — hard to see under the fur but it\'s there. Came in calm and well-behaved.',
+   trueOwnerIdx:null,
+   candidates:[
+     {name:'The Norden Family', pet:'Blizzard — samoyed, 5M, very fluffy, no birthmarks or special markings', score:0.76},
+     {name:'Kim Jae-won',       pet:'Cloud — samoyed, 4M, similar size, no distinguishing marks',             score:0.59},
+     {name:'Sara Blum',         pet:'Polar — great pyrenees, 6M, slightly coarser coat',                      score:0.42},
+   ],
+   tpLine:'', fnLine:'',
+   fpLine:'The dad lifts some fur near the haunch. "Blizzard has no birthmarks. This dog has a gray mark right here." Awkward silence.',
+  },
+  {id:18, shelterName:'Inkblot', breed:'Black Labrador', coat:'black',
+   desc:'Male, ~2 yrs. Standard black lab, no special markings. Very high energy — staff are exhausted. Found near the rec center. No tags, no chip.',
+   trueOwnerIdx:null,
+   candidates:[
+     {name:'Carl Winters', pet:'Bruno — black lab, 3M, calm and well-trained, never jumps on people', score:0.44},
+     {name:'Rita Huang',   pet:'Midnight — black lab mix, 2F, more reserved',                         score:0.38},
+     {name:'Joe Abrams',   pet:'Onyx — black retriever, 4M, larger build, senior',                    score:0.31},
+   ],
+   tpLine:'', fnLine:'',
+   fpLine:'"Bruno is a year older and doesn\'t jump on people. Bruno is very calm. This dog hasn\'t stopped moving." Carl shakes his head.',
+  },
+  {id:19, shelterName:'Sniffer', breed:'Beagle Mix', coat:'brown',
+   desc:'Female, ~3 yrs. Classic tricolor beagle coloring. Small white star-shaped mark on the forehead. Found following kids home from school on a Tuesday.',
+   trueOwnerIdx:null,
+   candidates:[
+     {name:'Tanya Bell',        pet:'Clover — beagle, 4F, tricolor, no forehead marking',                  score:0.41},
+     {name:'Ryan Park',         pet:'Patches — beagle mix, 3F, slightly lighter colors, no star mark',     score:0.33},
+     {name:'Beth Nwachukwu',    pet:'Penny — beagle, 2F, reddish tones, younger',                         score:0.28},
+   ],
+   tpLine:'', fnLine:'',
+   fpLine:'"Mine is a year older and has no forehead mark. Also the age is off." Tanya is matter-of-fact about it.',
+  },
+  {id:20, shelterName:'Fluff Tail', breed:'Corgi Mix', coat:'red',
+   desc:'Male, ~4 yrs. Orange-red corgi mix with an unusually full, fluffy tail — most corgis have docked tails. Found near a strip mall, no ID.',
+   trueOwnerIdx:null,
+   candidates:[
+     {name:'Jade Moreau',  pet:'Pumpkin — corgi, 4M, orange, docked tail as standard for breed',  score:0.38},
+     {name:'Sam Chang',    pet:'Rusty — corgi mix, 3M, docked tail, slightly lighter',             score:0.35},
+     {name:'Dana Floyd',   pet:'Mango — orange mutt, 5M, not corgi-type',                         score:0.22},
+   ],
+   tpLine:'', fnLine:'',
+   fpLine:'"Pumpkin has a docked tail — standard for the breed. This dog has a full fluffy tail." Jade is direct about it.',
+  },
+  {id:21, shelterName:'Stare Bear', breed:'Border Collie Mix', coat:'black',
+   desc:'Female, ~2 yrs. Black and white border collie type. One blue eye, one brown eye — heterochromia, very distinctive. Found herding pigeons in the park. No collar.',
+   trueOwnerIdx:null,
+   candidates:[
+     {name:'Oliver Hurst', pet:'Marble — border collie, 3F, black/white, BOTH eyes brown, intense stare',  score:0.35},
+     {name:'Grace Lin',    pet:'Panda — border collie mix, 2F, rounder face, both eyes same color',        score:0.30},
+     {name:'Tom Brett',    pet:'Ace — sheepdog, 4M, black/white, fluffy, both eyes brown',                 score:0.25},
+   ],
+   tpLine:'', fnLine:'',
+   fpLine:'"Marble has two brown eyes. This dog has one blue, one brown. That\'s very distinctive — definitely not mine." Oliver is disappointed.',
+  },
+  {id:25, shelterName:'Blue Tongue', breed:'Chow Chow Mix', coat:'golden',
+   desc:'Female, ~3 yrs. Fluffy golden dog with a distinctive blue-black tongue. Bear-like and somewhat aloof. Has a small scar on right ear from what looks like a fence scrape.',
+   trueOwnerIdx:null,
+   candidates:[
+     {name:'Mei Zhou',    pet:'Dumpling — chow chow, 3F, golden, blue-black tongue, no ear damage',        score:0.78},
+     {name:'Tom Nguyen',  pet:'Teddy — chow mix, 4M, darker gold, blue-black tongue, no ear markings',    score:0.60},
+     {name:'Kate Liu',    pet:'Mochi — spitz mix, 2F, fluffy golden, pink tongue',                        score:0.45},
+   ],
+   tpLine:'', fnLine:'',
+   fpLine:'"Dumpling has a small scar on her LEFT ear — this one\'s on the right. Also the scar shape is different." Mei checks carefully.',
+  },
+];
+
+// ═══════════════════════════════════════════════════════════
+// TRAINING SCRIPTS
+// ═══════════════════════════════════════════════════════════
+const TRAINING_STEPS = [
+  { caseId: 1,
+    managerText: `Welcome! I'm Pat. We just got a new AI model that matches found dogs to missing pet reports and gives each potential owner a <strong>confidence score</strong>. You'll see the top 3 candidates — you can call any of them in, or skip. Let's try your first case.`,
+    afterCall: idx => idx === 0
+      ? `That's a True Positive — Rosa was right! Score was <strong>92%</strong> and the description matched perfectly: same breed, same pink collar with bone charm. When score is high <em>and</em> descriptions line up, call.`
+      : `That wasn't the best call. Rosa Chen (rank #1) was the real match — 92% score, and her description matched the collar charm detail exactly. When descriptions match, go with it.`,
+    afterSkip: `That was Rosa Chen's dog! The AI score was <strong>92%</strong> and her description matched the pink collar with bone charm exactly. When score is high and details match, you should call.`,
+  },
+  { caseId: 12,
+    managerText: `Now for a tricky one. Owen Burke is ranked #1 with <strong>88%</strong>. Looks good — but always <strong>read the descriptions</strong> before you call. Does his dog description actually match what you see?`,
+    afterCall: idx => idx === 0
+      ? `False Positive! Owen immediately noticed the white patch is on the wrong shoulder. High score doesn't mean right match. The shoulder detail was in both descriptions — mismatched.`
+      : `That other owner wouldn't have matched either — but good instinct to question the top result! In this case, none of the descriptions quite fit. Skip was the right call.`,
+    afterSkip: `Correct! Owen's dog has the patch on the right shoulder. Droopy's is on the left. It was right there in both descriptions. High score, mismatched detail — right to skip.`,
+  },
+  { caseId: 15,
+    managerText: `Last training case. Ivan Kozlov is ranked #1. But look at Drama's description carefully, then look at <em>each owner's</em> description. Is Ivan actually the best match? What detail jumps out?`,
+    afterCall: idx => idx === 1
+      ? `Excellent detective work! Ivan's dog has <strong>brown eyes</strong> — Drama has <strong>blue eyes</strong>. Amy Chen's description mentions blue eyes. You read past the AI's ranking and found the real match.`
+      : idx === 0
+      ? `Ivan arrives and immediately points to Drama's eyes. "Storm has brown eyes — this dog has blue eyes." The eye color was right there in both descriptions. Amy Chen (rank #2) was the real match.`
+      : `That wasn't the match either. The key detail: Drama has <strong>blue eyes</strong>. Ivan's dog has brown. Amy Chen (rank #2) specifically mentions blue eyes. Sometimes the right owner isn't ranked first.`,
+    afterSkip: `There was a match here — Amy Chen, ranked #2. Her description says blue eyes, and Drama has blue eyes. Ivan's dog has brown eyes. The AI ranked Ivan higher, but descriptions told a different story.`,
+  },
+];
+
+// ═══════════════════════════════════════════════════════════
+// GAME STATE
+// ═══════════════════════════════════════════════════════════
+const G = {
+  day: 0, streak: 0, totalReunions: 0, totalDays: 0,
+  trainStep: 0,
+  timeLeft: 0, timerInterval: null,
+  dayQueue: [], caseIdx: 0,
+  stats: {tp:0, fp:0, fn:0, tn:0},
+  dayHistory: [],
+  afterToastFn: null,
+};
+
+const QUOTAS = [
+  {precision:0.40, recall:0.30},
+  {precision:0.50, recall:0.40},
+  {precision:0.60, recall:0.50},
+];
+const FILES_PER_DAY = 8;
+const DAY_SECONDS   = 90;
+
+function getDayQuota(d) { return QUOTAS[Math.min(d-1, QUOTAS.length-1)]; }
+function shuffle(a) {
+  const b=[...a];
+  for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}
+  return b;
+}
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// Populate intro windows
+['🐩','🦮','🐕','🐶','🐕‍🦺'].sort(()=>Math.random()-0.5).slice(0,3).forEach((d,i)=>{
+  const el=document.getElementById(`w${i+1}`); if(el) el.textContent=d;
+});
+
+// ═══════════════════════════════════════════════════════════
+// DOG SVG
+// ═══════════════════════════════════════════════════════════
+function dogSVG(coat) {
+  const p = {
+    golden:  ['#C8924A','#A06830','#3D1A05'],
+    black:   ['#323232','#1A1A1A','#0A0A0A'],
+    brown:   ['#7A4A28','#5A3010','#2D1005'],
+    white:   ['#EDEAD8','#CFC9B0','#2A2A2A'],
+    red:     ['#B84A18','#8A3008','#3D1005'],
+    spotted: ['#EDEAD8','#CFC9B0','#1A1A1A'],
+    gray:    ['#8A9298','#6A7278','#2A3038'],
+  }[coat] || ['#C8924A','#A06830','#3D1A05'];
+  const [m,d,n]=p;
+  const spots = coat==='spotted'
+    ? `<circle cx="45" cy="65" r="9" fill="${n}" opacity="0.18"/>
+       <circle cx="90" cy="78" r="6" fill="${n}" opacity="0.14"/>
+       <circle cx="65" cy="90" r="5" fill="${n}" opacity="0.12"/>` : '';
+  return `<svg viewBox="0 0 140 128" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+    <ellipse cx="33" cy="46" rx="19" ry="27" fill="${d}" transform="rotate(-14 33 46)"/>
+    <ellipse cx="107" cy="46" rx="19" ry="27" fill="${d}" transform="rotate(14 107 46)"/>
+    <ellipse cx="70" cy="72" rx="48" ry="43" fill="${m}"/>
+    <ellipse cx="32" cy="44" rx="11" ry="19" fill="${m}" transform="rotate(-14 32 44)" opacity="0.55"/>
+    <ellipse cx="108" cy="44" rx="11" ry="19" fill="${m}" transform="rotate(14 108 44)" opacity="0.55"/>
+    <ellipse cx="70" cy="88" rx="27" ry="19" fill="${d}" opacity="0.65"/>
+    ${spots}
+    <circle cx="52" cy="67" r="9" fill="white"/>
+    <circle cx="88" cy="67" r="9" fill="white"/>
+    <circle cx="53" cy="68" r="6" fill="${n}"/>
+    <circle cx="89" cy="68" r="6" fill="${n}"/>
+    <circle cx="55" cy="66" r="2.2" fill="white"/>
+    <circle cx="91" cy="66" r="2.2" fill="white"/>
+    <ellipse cx="70" cy="86" rx="9" ry="6.5" fill="${n}"/>
+    <ellipse cx="65" cy="88" rx="2.2" ry="1.8" fill="rgba(0,0,0,0.3)"/>
+    <ellipse cx="75" cy="88" rx="2.2" ry="1.8" fill="rgba(0,0,0,0.3)"/>
+    <path d="M 62 95 Q 70 104 78 95" stroke="${n}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  </svg>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// CASE VIEW BUILDER
+// ═══════════════════════════════════════════════════════════
+function buildCaseView(c, caseNum, total, showActions) {
+  const sc = s => s>=0.75?'score-high':s>=0.55?'score-mid':'score-low';
+  const tab = total ? `Case ${caseNum} of ${total}` : `Training Case`;
+
+  const rows = c.candidates.map((cand, i) => {
+    const pct = Math.round(cand.score * 100);
+    const callBtn = showActions
+      ? `<button class="btn-call-owner" data-idx="${i}">📞 Call</button>` : '';
+    return `<div class="owner-row ${i===0?'top-match':'other-match'}">
+      <div class="rank-num rank-${i===0?'1':'other'}">${i+1}</div>
+      <div class="owner-details">
+        <div class="owner-name">${cand.name}</div>
+        <div class="owner-pet">${cand.pet}</div>
+      </div>
+      <div class="score-col">
+        <div class="score-num">${pct}<span style="font-size:11px;font-weight:600">%</span></div>
+        <div class="score-bar-wrap"><div class="score-bar-fill ${sc(cand.score)}" style="width:${pct}%"></div></div>
+      </div>
+      ${callBtn}
+    </div>`;
+  }).join('');
+
+  const actions = showActions ? `
+    <div class="skip-row">
+      <div class="action-hint">Call one owner in, or pass on all of them</div>
+      <button class="btn-skip" data-idx="-1">None of these →</button>
+    </div>` : '';
+
+  return `<div class="case-file">
+    <div class="file-tab">${tab}</div>
+    <div class="file-inner">
+      <div class="dog-profile">
+        <div class="dog-illustration">${dogSVG(c.coat)}</div>
+        <div class="dog-info">
+          <div class="dog-name-row">
+            <div class="dog-name">${c.shelterName}</div>
+            <div class="found-tag">Found</div>
+          </div>
+          <div class="dog-breed">${c.breed}</div>
+          <div class="dog-desc">${c.desc}</div>
+        </div>
+      </div>
+      <div class="match-section">
+        <div class="match-label"><span class="ai-badge">AI</span> Match Analysis</div>
+        ${rows}
+      </div>
+      ${actions}
+    </div>
+  </div>`;
+}
+
+function attachDecisionListeners(onDecide) {
+  document.querySelectorAll('.btn-call-owner').forEach(btn => {
+    btn.addEventListener('click', () => onDecide(parseInt(btn.dataset.idx)));
+  });
+  const skip = document.querySelector('.btn-skip[data-idx="-1"]');
+  if (skip) skip.addEventListener('click', () => onDecide(-1));
+}
+
+// ═══════════════════════════════════════════════════════════
+// TRAINING
+// ═══════════════════════════════════════════════════════════
+function startTraining() {
+  G.trainStep = 0;
+  showScreen('s-training');
+  showTrainingStep(0);
+}
+
+function showTrainingStep(idx) {
+  const step = TRAINING_STEPS[idx];
+  const c = CASES.find(x => x.id === step.caseId);
+  document.getElementById('manager-text').innerHTML = step.managerText;
+  document.getElementById('train-step-label').textContent = `Step ${idx+1} of ${TRAINING_STEPS.length}`;
+  const area = document.getElementById('train-case');
+  area.innerHTML = buildCaseView(c, idx+1, null, true);
+  attachDecisionListeners(calledIdx => handleTrainingDecision(calledIdx, c, step, idx));
+}
+
+function handleTrainingDecision(calledIdx, c, step, stepIdx) {
+  const skipped = calledIdx === -1;
+  const isTP = !skipped && calledIdx === c.trueOwnerIdx;
+  const isFP = !skipped && calledIdx !== c.trueOwnerIdx;
+  const isFN = skipped && c.trueOwnerIdx !== null;
+  const isTN = skipped && c.trueOwnerIdx === null;
+
+  let type, icon, title, msg;
+  if (isTP) { type='tp'; icon='🎉'; title='Reunion!'; msg=c.tpLine; }
+  else if (isFP) { type='fp'; icon='😤'; title='Wrong owner!'; msg=c.fpLine; }
+  else if (isFN) { type='fn'; icon='😔'; title='Missed match!'; msg=c.fnLine; }
+  else { type='tn'; icon='✓'; title='Good skip'; msg='Correct call — none of these were the right match.'; }
+
+  const explain = skipped ? step.afterSkip : (typeof step.afterCall === 'function' ? step.afterCall(calledIdx) : step.afterCall);
+
+  showToast(type, icon, title, msg, explain, () => {
+    if (stepIdx + 1 < TRAINING_STEPS.length) {
+      showTrainingStep(stepIdx + 1);
+    } else {
+      showAfterTrainingPrompt();
+    }
+  });
+}
+
+function showAfterTrainingPrompt() {
+  document.getElementById('manager-text').innerHTML =
+    `Good work! Remember: <strong>score + description together</strong> tell the story. And the AI's #1 rank isn't always right — sometimes the real owner is ranked lower. Read every description. You'll track your <strong>precision</strong> (how often your calls are correct) and <strong>recall</strong> (how many true matches you catch). Ready?`;
+  document.getElementById('train-step-label').textContent = 'Training Complete';
+  document.getElementById('train-case').innerHTML = `<button class="btn-primary" onclick="startDay()" style="margin-top:8px">Start Day 1 →</button>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// GAME
+// ═══════════════════════════════════════════════════════════
+function startDay() {
+  G.day++;
+  G.stats = {tp:0, fp:0, fn:0, tn:0};
+  G.dayHistory = [];
+  G.dayQueue = shuffle(CASES).slice(0, FILES_PER_DAY);
+  G.caseIdx = 0;
+
+  const quota = getDayQuota(G.day);
+  document.getElementById('day-label').textContent = `Day ${G.day}`;
+  document.getElementById('streak-label').innerHTML = G.streak>0 ? `🔥 <span>${G.streak}</span> day streak` : '';
+  document.getElementById('q-precision-label').textContent = `Precision ≥ ${Math.round(quota.precision*100)}%`;
+  document.getElementById('q-recall-label').textContent    = `Recall ≥ ${Math.round(quota.recall*100)}%`;
+
+  updateStats();
+  showScreen('s-game');
+  startTimer();
+  showNextCase();
+}
+
+function startTimer() {
+  G.timeLeft = DAY_SECONDS;
+  updateTimerDisplay();
+  G.timerInterval = setInterval(() => {
+    G.timeLeft--;
+    updateTimerDisplay();
+    if (G.timeLeft <= 0) { clearInterval(G.timerInterval); endDay(); }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(G.timeLeft/60), s = G.timeLeft%60;
+  const el = document.getElementById('timer-display');
+  el.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  el.classList.toggle('urgent', G.timeLeft <= 20);
+}
+
+function showNextCase() {
+  if (G.caseIdx >= G.dayQueue.length) {
+    clearInterval(G.timerInterval);
+    endDay();
+    return;
+  }
+  const c = G.dayQueue[G.caseIdx];
+  const remaining = G.dayQueue.length - G.caseIdx;
+  document.getElementById('files-remaining').innerHTML = `<strong>${remaining}</strong> file${remaining!==1?'s':''} remaining`;
+
+  const area = document.getElementById('game-case-area');
+  area.innerHTML = buildCaseView(c, G.caseIdx+1, G.dayQueue.length, true);
+  attachDecisionListeners(idx => handleGameDecision(idx, c));
+}
+
+function handleGameDecision(calledIdx, c) {
+  const skipped = calledIdx === -1;
+  const isTP = !skipped && calledIdx === c.trueOwnerIdx;
+  const isFP = !skipped && calledIdx !== c.trueOwnerIdx;
+  const isFN = skipped && c.trueOwnerIdx !== null;
+  const isTN = skipped && c.trueOwnerIdx === null;
+
+  if (isTP) G.stats.tp++;
+  else if (isFP) G.stats.fp++;
+  else if (isFN) G.stats.fn++;
+  else G.stats.tn++;
+
+  G.dayHistory.push({
+    score: c.candidates[0].score,
+    trueOwnerIdx: c.trueOwnerIdx,
+    calledIdx,
+    outcome: isTP?'tp':isFP?'fp':isFN?'fn':'tn',
+  });
+  G.caseIdx++;
+  updateStats();
+
+  let type, icon, title, msg, explain;
+  const topScore = Math.round(c.candidates[0].score*100);
+  const calledName = calledIdx >= 0 ? c.candidates[calledIdx].name.split(' ')[0] : '';
+
+  if (isTP) {
+    type='tp'; icon='🎉'; title='Reunion!'; msg=c.tpLine;
+    explain=`<strong>True Positive.</strong> ${calledName} was the real match. Score for their rank was ${Math.round(c.candidates[calledIdx].score*100)}%.`;
+  } else if (isFP) {
+    type='fp'; icon='😤'; title='Wrong owner!'; msg=c.fpLine;
+    explain=`<strong>False Positive.</strong> The top score was ${topScore}% but the descriptions didn't match up on closer inspection.${c.trueOwnerIdx!==null?' The real owner was ranked #'+(c.trueOwnerIdx+1)+'.':''}`;
+  } else if (isFN) {
+    type='fn'; icon='😔'; title='Missed match...'; msg=c.fnLine;
+    explain=`<strong>False Negative.</strong> You skipped, but the real owner was ranked #${c.trueOwnerIdx+1}. A reunion was missed.`;
+  } else {
+    type='tn'; icon='✓'; title='Good skip';
+    msg='You passed on a set of calls that would all have been wasted trips. Nice read.';
+    explain=`<strong>True Negative.</strong> None of these candidates were the real owner. Right to skip.`;
+  }
+
+  showToast(type, icon, title, msg, explain, () => {
+    if (G.timeLeft > 0) showNextCase();
+  });
+}
+
+function updateStats() {
+  const {tp,fp,fn,tn} = G.stats;
+  document.getElementById('stat-tp').textContent = tp;
+  document.getElementById('stat-fp').textContent = fp;
+  document.getElementById('stat-fn').textContent = fn;
+  document.getElementById('stat-tn').textContent = tn;
+
+  const calls = tp+fp, trueMatches = tp+fn;
+  const prec = calls>0 ? tp/calls : null;
+  const rec  = trueMatches>0 ? tp/trueMatches : null;
+
+  document.getElementById('live-precision').textContent = prec!==null ? `${Math.round(prec*100)}%` : '—';
+  document.getElementById('live-recall').textContent    = rec!==null  ? `${Math.round(rec*100)}%`  : '—';
+
+  const quota = getDayQuota(G.day);
+  updateQuotaCheck('q-precision', prec, quota.precision);
+  updateQuotaCheck('q-recall',    rec,  quota.recall);
+}
+
+function updateQuotaCheck(id, val, target) {
+  const el = document.getElementById(id);
+  if (val===null) { el.className='quota-check'; el.textContent=''; return; }
+  if (val>=target) { el.className='quota-check met';  el.textContent='✓'; }
+  else             { el.className='quota-check fail'; el.textContent='✗'; }
+}
+
+// ═══════════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════════
+function showToast(type, icon, title, msg, explain, afterFn) {
+  document.getElementById('toast-icon').textContent  = icon;
+  document.getElementById('toast-type').textContent  = {tp:'True Positive',fp:'False Positive',fn:'False Negative',tn:'True Negative'}[type];
+  document.getElementById('toast-type').className    = `toast-type ${type}`;
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-msg').textContent   = msg;
+  document.getElementById('toast-explain').innerHTML = explain;
+  G.afterToastFn = afterFn;
+  document.getElementById('outcome-toast').classList.add('show');
+}
+
+function closeToast() {
+  document.getElementById('outcome-toast').classList.remove('show');
+  const fn = G.afterToastFn; G.afterToastFn = null; if (fn) fn();
+}
+
+// ═══════════════════════════════════════════════════════════
+// DAY END
+// ═══════════════════════════════════════════════════════════
+function endDay() {
+  document.getElementById('outcome-toast').classList.remove('show');
+  G.afterToastFn = null;
+
+  const {tp,fp,fn,tn} = G.stats;
+  const calls = tp+fp, trueMatches = tp+fn;
+  const prec = calls>0 ? tp/calls : 0;
+  const rec  = trueMatches>0 ? tp/trueMatches : 0;
+  const quota = getDayQuota(G.day);
+  const metQuota = prec>=quota.precision && rec>=quota.recall;
+
+  if (metQuota) G.streak++; else G.streak=0;
+  G.totalReunions += tp;
+  G.totalDays++;
+
+  document.getElementById('de-title').textContent = `Day ${G.day} Complete`;
+  document.getElementById('de-subtitle').textContent = `${G.dayHistory.length} files reviewed`;
+
+  const banner = document.getElementById('de-banner');
+  if (metQuota) {
+    banner.className='outcome-banner success';
+    document.getElementById('de-banner-title').textContent = G.streak>1 ? `${G.streak}-Day Streak! 🔥` : 'Quota Met!';
+    document.getElementById('de-banner-msg').textContent   = `Precision ${Math.round(prec*100)}%, Recall ${Math.round(rec*100)}% — both above today's targets.`;
+  } else {
+    banner.className='outcome-banner fail';
+    document.getElementById('de-banner-title').textContent = 'Quota Missed';
+    const why = prec<quota.precision && rec<quota.recall ? 'Both precision and recall were below target.'
+      : prec<quota.precision ? `Precision was ${Math.round(prec*100)}% — too many wrong calls.`
+      : `Recall was ${Math.round(rec*100)}% — too many matches missed.`;
+    document.getElementById('de-banner-msg').textContent = why;
+    G.streak=0;
+  }
+
+  document.getElementById('de-tp').textContent = tp;
+  document.getElementById('de-fp').textContent = fp;
+  document.getElementById('de-fn').textContent = fn;
+  document.getElementById('de-tn').textContent = tn;
+
+  setTimeout(()=>{
+    document.getElementById('de-prec-bar').style.width = `${Math.min(prec*100,100)}%`;
+    document.getElementById('de-rec-bar').style.width  = `${Math.min(rec*100,100)}%`;
+  }, 100);
+  document.getElementById('de-prec-pct').textContent = `${Math.round(prec*100)}%`;
+  document.getElementById('de-rec-pct').textContent  = `${Math.round(rec*100)}%`;
+
+  const precTarget = document.getElementById('de-prec-target');
+  precTarget.textContent = `Target: ${Math.round(quota.precision*100)}%`;
+  precTarget.className   = `pr-target ${prec>=quota.precision?'met':'miss'}`;
+  const recTarget = document.getElementById('de-rec-target');
+  recTarget.textContent  = `Target: ${Math.round(quota.recall*100)}%`;
+  recTarget.className    = `pr-target ${rec>=quota.recall?'met':'miss'}`;
+
+  // Threshold insight
+  const calledScores = G.dayHistory.filter(h=>h.calledIdx>=0).map(h=>h.score);
+  let note = '';
+  if (calledScores.length===0) {
+    note = `You skipped every case today. Recall is 0 — try making some calls!`;
+  } else if (calledScores.length===G.dayHistory.length) {
+    note = `You called on every case. Recall is maximized but precision suffers when you call poor matches.`;
+  } else {
+    const avg = Math.round(calledScores.reduce((a,b)=>a+b,0)/calledScores.length*100);
+    note = `Your calls averaged around <strong>${avg}% top-candidate confidence</strong>. `;
+    if (prec<quota.precision) note+=`To improve precision, be more selective — check descriptions more carefully before calling.`;
+    else if (rec<quota.recall) note+=`To improve recall, consider calling even at lower confidence if the description details match.`;
+    else note+=`Good balance of score and description reading today.`;
+  }
+  document.getElementById('de-threshold').innerHTML = note;
+
+  const [chartHTML, verdictHTML] = buildBeatAIChart(G.dayHistory, calls>0?prec:null, rec);
+  document.getElementById('beat-ai-chart').innerHTML   = chartHTML;
+  document.getElementById('beat-ai-verdict').innerHTML = verdictHTML;
+
+  showScreen('s-dayend');
+}
+
+function nextDay() { startDay(); }
+
+// ═══════════════════════════════════════════════════════════
+// BEAT THE AI CHART
+// ═══════════════════════════════════════════════════════════
+function buildBeatAIChart(history, playerPrec, playerRec) {
+  if (history.length < 4) {
+    return ['<p style="text-align:center;color:var(--ink-light);font-size:12px;padding:8px 0">Review more cases to unlock AI comparison</p>', ''];
+  }
+
+  const thresholds = Array.from({length:21}, (_,i) => i/20);
+
+  // AI strategy: call candidate 0 if score >= threshold
+  const curve = thresholds.map(t => {
+    let tp=0, fp=0, fn=0, tn=0;
+    history.forEach(h => {
+      const aiCalls = h.score >= t;
+      const trueIsTop = h.trueOwnerIdx === 0;
+      const hasTrueOwner = h.trueOwnerIdx !== null;
+      if (aiCalls && trueIsTop)      tp++;
+      else if (aiCalls && !trueIsTop) fp++;
+      else if (!aiCalls && hasTrueOwner) fn++;
+      else tn++;
+    });
+    return {t, prec:(tp+fp)>0?tp/(tp+fp):null, rec:(tp+fn)>0?tp/(tp+fn):0};
+  });
+
+  function miniChart(vals, playerVal, label, color) {
+    const W=380,H=110,pl=30,pt=22,pr=40,pb=26;
+    const cw=W-pl-pr, ch=H-pt-pb;
+    const sx=t=>pl+t*cw, sy=v=>pt+(1-v)*ch;
+
+    const linePts = thresholds
+      .map((t,i) => vals[i]!==null ? `${sx(t).toFixed(1)},${sy(vals[i]).toFixed(1)}` : null)
+      .filter(Boolean).join(' ');
+
+    let rects='', inWin=false, winX=0;
+    thresholds.forEach((t,i) => {
+      const beats = vals[i]!==null && playerVal!==null && playerVal>vals[i];
+      if (beats && !inWin) { inWin=true; winX=sx(t); }
+      if (!beats && inWin) {
+        inWin=false;
+        rects+=`<rect x="${winX.toFixed(1)}" y="${pt}" width="${(sx(t)-winX).toFixed(1)}" height="${ch}" fill="rgba(58,106,42,0.13)"/>`;
+      }
+    });
+    if (inWin) rects+=`<rect x="${winX.toFixed(1)}" y="${pt}" width="${(sx(1)-winX).toFixed(1)}" height="${ch}" fill="rgba(58,106,42,0.13)"/>`;
+
+    const yGrid=[0,0.5,1].map(v=>`
+      <line x1="${pl}" y1="${sy(v).toFixed(1)}" x2="${W-pr}" y2="${sy(v).toFixed(1)}" stroke="#DDD6C4" stroke-width="0.8"/>
+      <text x="${pl-4}" y="${(sy(v)+3).toFixed(1)}" text-anchor="end" font-size="9" fill="#A88A6A">${Math.round(v*100)}%</text>`
+    ).join('');
+    const xGrid=[0,0.25,0.5,0.75,1].map(v=>`
+      <line x1="${sx(v).toFixed(1)}" y1="${pt}" x2="${sx(v).toFixed(1)}" y2="${H-pb}" stroke="#DDD6C4" stroke-width="0.8"/>
+      <text x="${sx(v).toFixed(1)}" y="${H-pb+12}" text-anchor="middle" font-size="9" fill="#A88A6A">${Math.round(v*100)}%</text>`
+    ).join('');
+
+    const pyP = playerVal!==null ? sy(playerVal).toFixed(1) : null;
+    const playerLine = pyP ? `
+      <line x1="${pl}" y1="${pyP}" x2="${W-pr}" y2="${pyP}" stroke="${color}" stroke-width="2" stroke-dasharray="6,3" opacity="0.85"/>
+      <circle cx="${(W-pr+6).toFixed(1)}" cy="${pyP}" r="4" fill="${color}"/>
+      <text x="${(W-pr+13).toFixed(1)}" y="${(parseFloat(pyP)+4).toFixed(1)}" font-size="10" font-weight="800" fill="${color}">You</text>` : '';
+
+    return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-bottom:6px">
+      ${rects}${yGrid}${xGrid}
+      <line x1="${pl}" y1="${pt}" x2="${pl}" y2="${H-pb}" stroke="#C8B898" stroke-width="1.5"/>
+      <line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="#C8B898" stroke-width="1.5"/>
+      <polyline points="${linePts}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      ${playerLine}
+      <text x="${pl}" y="${pt-6}" font-size="11" font-weight="800" fill="${color}">${label}</text>
+      <line x1="${W-pr-90}" y1="${pt-8}" x2="${W-pr-76}" y2="${pt-8}" stroke="${color}" stroke-width="2.5"/>
+      <text x="${W-pr-73}" y="${pt-5}" font-size="9" fill="#7A5A3A">AI strategy</text>
+      <line x1="${W-pr-90}" y1="${pt+2}" x2="${W-pr-76}" y2="${pt+2}" stroke="${color}" stroke-width="2" stroke-dasharray="5,3"/>
+      <text x="${W-pr-73}" y="${pt+5}" font-size="9" fill="#7A5A3A">Your score</text>
+      <text x="${pl+cw/2}" y="${H}" text-anchor="middle" font-size="9" fill="#A88A6A">AI Confidence Threshold →</text>
+    </svg>`;
+  }
+
+  const chartHTML = miniChart(curve.map(p=>p.prec), playerPrec, 'PRECISION', '#C85A12')
+                  + miniChart(curve.map(p=>p.rec),  playerRec,  'RECALL',    '#2A508A');
+
+  // Verdict
+  const precWin = curve.filter(p=>p.prec!==null && playerPrec!==null && playerPrec>p.prec);
+  const recWin  = curve.filter(p=>playerRec>p.rec);
+  let lines = [];
+
+  if (playerPrec===null) {
+    lines.push(`<span style="color:var(--ink-mid)">Precision: no calls made — nothing to compare.</span>`);
+  } else if (precWin.length===0) {
+    lines.push(`<span style="color:var(--red)">Precision: the AI beats you at every threshold today.</span>`);
+  } else {
+    const lo=Math.round(Math.min(...precWin.map(p=>p.t))*100), hi=Math.round(Math.max(...precWin.map(p=>p.t))*100);
+    lines.push(`<span style="color:var(--green)">✓ Precision: you beat the AI for thresholds ${lo}%–${hi}%.</span> A very strict AI (high threshold) was more precise.`);
+  }
+  if (recWin.length===0) {
+    lines.push(`<span style="color:var(--red)">Recall: the AI beats you at every threshold today.</span>`);
+  } else if (recWin.length===thresholds.length) {
+    lines.push(`<span style="color:var(--blue)">✓ Recall: you beat the AI at every threshold — you caught more matches than any pure score strategy!</span>`);
+  } else {
+    const lo=Math.round(Math.min(...recWin.map(p=>p.t))*100), hi=Math.round(Math.max(...recWin.map(p=>p.t))*100);
+    lines.push(`<span style="color:var(--blue)">✓ Recall: you beat the AI for thresholds ${lo}%–${hi}%.</span> A lenient AI (low threshold) caught more matches.`);
+  }
+
+  return [chartHTML, lines.join('<br>')];
+}
+
+// ═══════════════════════════════════════════════════════════
+// GAME OVER
+// ═══════════════════════════════════════════════════════════
+function showGameOver() {
+  document.getElementById('go-sub').textContent = `You worked ${G.totalDays} day${G.totalDays!==1?'s':''} and reunited ${G.totalReunions} dog${G.totalReunions!==1?'s':''} with their families.`;
+  document.getElementById('go-stats').innerHTML = `
+    <div class="final-stat"><div class="n">${G.totalDays}</div><div class="l">Days Worked</div></div>
+    <div class="final-stat"><div class="n">${G.totalReunions}</div><div class="l">Reunions</div></div>
+    <div class="final-stat"><div class="n">${G.streak}</div><div class="l">Best Streak</div></div>`;
+  showScreen('s-gameover');
+}
+
+function restartGame() {
+  Object.assign(G, {day:0,streak:0,totalReunions:0,totalDays:0});
+  showScreen('s-intro');
+}
+</script>
+</body>
+</html>
